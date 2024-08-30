@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
 
     @Override
-    public Odontologo registrar(Odontologo odontologo) {
+    public Odontologo guardar(Odontologo odontologo) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

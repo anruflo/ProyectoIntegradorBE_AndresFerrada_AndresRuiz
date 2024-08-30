@@ -1,0 +1,10 @@
+com\dh\clinica\ClinicaApplication.class
+com\dh\clinica\dao\IDao.class
+com\dh\clinica\controller\OdontologoController.class
+com\dh\clinica\service\PacienteService.class
+com\dh\clinica\service\OdontologoService.class
+com\dh\clinica\controller\PacienteController.class
+com\dh\clinica\model\Paciente.class
+com\dh\clinica\model\Domicilio.class
+com\dh\clinica\model\Odontologo.class
+com\dh\clinica\config\WebConfig.class

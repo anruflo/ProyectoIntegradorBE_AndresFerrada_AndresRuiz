@@ -19,7 +19,7 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
     public static final String DELETE = "DELETE FROM DOMICILIOS WHERE ID = ?";
 
     @Override
-    public Domicilio registrar(Domicilio domicilio) {
+    public Domicilio guardar(Domicilio domicilio) {
         Connection connection = null;
         Domicilio domiclioARetornar = null;
 

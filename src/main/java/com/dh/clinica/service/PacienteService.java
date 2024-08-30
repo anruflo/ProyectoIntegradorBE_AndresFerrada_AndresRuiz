@@ -15,7 +15,7 @@ public class PacienteService {
     }
 
     public Paciente guardarPaciente(Paciente paciente){
-        return pacienteIDao.registrar(paciente);
+        return pacienteIDao.guardar(paciente);
     }
 
     public Paciente buscarPorId(Integer id){

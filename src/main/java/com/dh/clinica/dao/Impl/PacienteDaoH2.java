@@ -26,10 +26,10 @@ public class PacienteDaoH2 implements IDao<Paciente> {
     public DomicilioDaoH2 domicilioDaoH2 = new DomicilioDaoH2();
 
     @Override
-    public Paciente registrar(Paciente paciente) {
+    public Paciente guardar(Paciente paciente) {
         Connection connection = null;
         Paciente pacienteARetornar = null;
-        Domicilio domicilio = domicilioDaoH2.registrar(paciente.getDomicilio());
+        Domicilio domicilio = domicilioDaoH2.guardar(paciente.getDomicilio());
 
        try{
          connection = H2Connection.getConnection();
