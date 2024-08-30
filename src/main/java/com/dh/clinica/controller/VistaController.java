@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class VistaController {
     private PacienteService pacienteService;
+    private OdontologoService odontologoService;
 
-    public VistaController(PacienteService pacienteService) {
+    public VistaController(PacienteService pacienteService , OdontologoService odontologoService) {
         this.pacienteService = pacienteService;
+        this.odontologoService = odontologoService;
     }
 
     // localhost:8080/20  -> @PathVariable
@@ -36,27 +38,25 @@ public class VistaController {
         return "paciente";
     }
 
-    private OdontologoService odontologoService;
 
-    public VistaController(OdontologoService odontologoService) {
-        this.odontologoService = odontologoService;
-    }
+
+
 
     // localhost:8080/20  -> @PathVariable
     // localhost:8080?id=1  -> @RequestParams
-    @GetMapping("/index")
+    @GetMapping("/index3")
     public String mostrarOdontologoPorId(Model model, @RequestParam Integer id){
         Odontologo odontologo = odontologoService.buscarPorId(id);
         model.addAttribute("nombre", odontologo.getNombre());
         model.addAttribute("apellido", odontologo.getApellido());
-        return "paciente";
+        return "odontólogo";
     }
 
-    @GetMapping("/index2/{id}")
+    @GetMapping("/index3/{id}")
     public String mostrarOdontologoPorId2(Model model, @PathVariable Integer id){
         Odontologo odontologo = odontologoService.buscarPorId(id);
         model.addAttribute("nombre", odontologo.getNombre());
         model.addAttribute("apellido", odontologo.getApellido());
-        return "paciente";
+        return "odontólogo";
     }
 }
