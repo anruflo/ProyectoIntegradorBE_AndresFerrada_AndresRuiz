@@ -1,5 +1,6 @@
 package com.dh.clinica.controller;
 
+import com.dh.clinica.entity.Domicilio;
 import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.service.Impl.PacienteService;
 import org.springframework.http.HttpStatusCode;
@@ -45,7 +46,32 @@ public class PacienteController {
         Optional<Paciente> pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
 
         if(pacienteEncontrado.isPresent()){
-            pacienteService.actualizarPaciente(pacienteEncontrado.get());
+
+            Paciente pacienteActualizado = pacienteEncontrado.get();
+
+            pacienteActualizado.setApellido(paciente.getApellido());
+            pacienteActualizado.setNombre(paciente.getNombre());
+            pacienteActualizado.setDni(paciente.getDni());
+            pacienteActualizado.setFechaIngreso(paciente.getFechaIngreso());
+
+            if(paciente.getDomicilio() != null){
+                Domicilio domicilioActualizado = pacienteActualizado.getDomicilio();
+
+                domicilioActualizado.setCalle(paciente.getDomicilio().getCalle());
+                domicilioActualizado.setNumero(paciente.getDomicilio().getNumero());
+                domicilioActualizado.setLocalidad(paciente.getDomicilio().getLocalidad());
+                domicilioActualizado.setProvincia(paciente.getDomicilio().getProvincia());
+
+                pacienteActualizado.setDomicilio(domicilioActualizado);
+            }
+
+            pacienteService.actualizarPaciente(pacienteActualizado);
+
+
+            /*pacienteService.actualizarPaciente(pacienteEncontrado.get());*/
+
+
+
             String jsonResponse = "{\"mensaje\": \"Paciente actualizado\"}";
             return ResponseEntity.ok(jsonResponse);
         } else {

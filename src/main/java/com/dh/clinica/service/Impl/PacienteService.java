@@ -34,7 +34,6 @@ public class PacienteService implements IPacienteService {
     @Override
     public void actualizarPaciente(Paciente paciente) {
        pacienteRepository.save(paciente);
-
     }
 
     @Override
