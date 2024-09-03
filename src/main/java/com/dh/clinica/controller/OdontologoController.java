@@ -1,12 +1,12 @@
 package com.dh.clinica.controller;
 
-import com.dh.clinica.model.Odontologo;
-import com.dh.clinica.model.Paciente;
-import com.dh.clinica.service.OdontologoService;
+import com.dh.clinica.entity.Odontologo;
+import com.dh.clinica.service.Impl.OdontologoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/odontologo")
@@ -18,15 +18,15 @@ public class OdontologoController {
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<Odontologo> guardarOdontologo(@RequestBody Odontologo odontologo){
-        return  ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
+    public ResponseEntity<Odontologo> guardarOdontologo(@RequestBody Odontologo odontologo) {
+        return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
     }
 
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
-        Odontologo odontologo = odontologoService.buscarPorId(id);
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        Optional<Odontologo> odontologo = odontologoService.buscarPorId(id);
 
-        if(odontologo != null){
+        if (odontologo.isPresent()) {
             return ResponseEntity.ok(odontologo);
         } else {
             return ResponseEntity.status(404).build();
@@ -34,16 +34,16 @@ public class OdontologoController {
     }
 
     @GetMapping("/lista")
-    public ResponseEntity<List<Odontologo>> listarTodos(){
+    public ResponseEntity<List<Odontologo>> listarTodos() {
         return ResponseEntity.ok(odontologoService.listarTodos());
     }
 
     @PutMapping("/actualizar")
-    public ResponseEntity<?> actualizarOdontologo(@RequestBody Odontologo odontologo){
-        Odontologo odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
+    public ResponseEntity<?> actualizarOdontologo(@RequestBody Odontologo odontologo) {
+        Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
 
-        if(odontologoEncontrado != null){
-            odontologoService.actualizarOdontologo(odontologo);
+        if (odontologoEncontrado.isPresent()) {
+            odontologoService.actualizarOdontologo(odontologoEncontrado.get());
             String jsonResponse = "{\"mensaje\": \"Odontólogo actualizado\"}";
             return ResponseEntity.ok(jsonResponse);
         } else {
@@ -52,14 +52,14 @@ public class OdontologoController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarOdontologo(@PathVariable Integer id){
-        Odontologo odontologEncontrado = odontologoService.buscarPorId(id);
+    public ResponseEntity<?> eliminarOdontologo(@PathVariable Integer id) {
+        Optional<Odontologo> odontologEncontrado = odontologoService.buscarPorId(id);
 
-        if(odontologEncontrado != null){
+        if (odontologEncontrado.isPresent()) {
             odontologoService.eliminarOdontologo(id);
             String jsonResponse = "{\"mensaje\": \"Odontólogo eliminado\"}";
             return ResponseEntity.ok(jsonResponse);
-        } else{
+        } else {
             return ResponseEntity.status(404).build();
         }
     }
