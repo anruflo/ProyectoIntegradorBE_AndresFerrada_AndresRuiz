@@ -42,11 +42,10 @@ public class PacienteController {
     }
 
     @PutMapping("/actualizar")
-    public ResponseEntity<?> actualizarPaciente(@RequestBody Paciente paciente){
+    public ResponseEntity<?> actualizarPaciente(@RequestBody Paciente paciente) {
         Optional<Paciente> pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
 
-        if(pacienteEncontrado.isPresent()){
-
+        if (pacienteEncontrado.isPresent()) {
             Paciente pacienteActualizado = pacienteEncontrado.get();
 
             pacienteActualizado.setApellido(paciente.getApellido());
@@ -54,7 +53,7 @@ public class PacienteController {
             pacienteActualizado.setDni(paciente.getDni());
             pacienteActualizado.setFechaIngreso(paciente.getFechaIngreso());
 
-            if(paciente.getDomicilio() != null){
+            if (paciente.getDomicilio() != null) {
                 Domicilio domicilioActualizado = pacienteActualizado.getDomicilio();
 
                 domicilioActualizado.setCalle(paciente.getDomicilio().getCalle());
@@ -66,11 +65,6 @@ public class PacienteController {
             }
 
             pacienteService.actualizarPaciente(pacienteActualizado);
-
-
-            /*pacienteService.actualizarPaciente(pacienteEncontrado.get());*/
-
-
 
             String jsonResponse = "{\"mensaje\": \"Paciente actualizado\"}";
             return ResponseEntity.ok(jsonResponse);
@@ -96,5 +90,4 @@ public class PacienteController {
     public ResponseEntity<List<Paciente>> buscarApellidoYNombre(@RequestParam String apellido, @RequestParam String nombre){
         return ResponseEntity.ok(pacienteService.buscarPorApellidoYNombre(apellido, nombre));
     }
-
 }
