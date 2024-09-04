@@ -62,5 +62,4 @@ public class TurnoController {
 
         return ResponseEntity.ok("Turno eliminado con éxito");
     }
-
 }
