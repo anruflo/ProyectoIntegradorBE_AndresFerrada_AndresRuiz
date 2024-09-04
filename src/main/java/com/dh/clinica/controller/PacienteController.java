@@ -74,4 +74,9 @@ public class PacienteController {
     public ResponseEntity<List<Paciente>> buscarApellidoYNombre(@RequestParam String apellido, @RequestParam String nombre){
         return ResponseEntity.ok(pacienteService.buscarPorApellidoYNombre(apellido, nombre));
     }
+
+    @GetMapping("/buscarNombre/{nombre}")
+    public ResponseEntity<List<Paciente>> buscarNombreLike(@PathVariable String nombre){
+        return ResponseEntity.ok(pacienteService.buscarLikeNombre(nombre));
+    }
 }

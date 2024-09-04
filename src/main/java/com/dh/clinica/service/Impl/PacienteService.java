@@ -45,4 +45,9 @@ public class PacienteService implements IPacienteService {
     public List<Paciente> buscarPorApellidoYNombre(String apellido, String nombre) {
         return pacienteRepository.findByApellidoAndNombre(apellido, nombre);
     }
+
+    @Override
+    public List<Paciente> buscarLikeNombre(String nombre) {
+        return pacienteRepository.findByNombreLike(nombre);
+    }
 }
