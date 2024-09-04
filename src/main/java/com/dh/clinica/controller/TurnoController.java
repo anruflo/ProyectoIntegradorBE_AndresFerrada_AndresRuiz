@@ -52,7 +52,14 @@ public class TurnoController {
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarTurno(@PathVariable Integer id) {
-        turnoService.eliminarTurno(id);
+        Optional<Turno> turno = turnoService.buscarPorId(id);
+
+        if(turno.isPresent()){
+            turnoService.eliminarTurno(id);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turno no encontrado");
+        }
+
         return ResponseEntity.ok("Turno eliminado con éxito");
     }
 
