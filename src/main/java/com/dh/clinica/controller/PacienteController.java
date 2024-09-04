@@ -48,23 +48,7 @@ public class PacienteController {
         if (pacienteEncontrado.isPresent()) {
             Paciente pacienteActualizado = pacienteEncontrado.get();
 
-            pacienteActualizado.setApellido(paciente.getApellido());
-            pacienteActualizado.setNombre(paciente.getNombre());
-            pacienteActualizado.setDni(paciente.getDni());
-            pacienteActualizado.setFechaIngreso(paciente.getFechaIngreso());
-
-            if (paciente.getDomicilio() != null) {
-                Domicilio domicilioActualizado = pacienteActualizado.getDomicilio();
-
-                domicilioActualizado.setCalle(paciente.getDomicilio().getCalle());
-                domicilioActualizado.setNumero(paciente.getDomicilio().getNumero());
-                domicilioActualizado.setLocalidad(paciente.getDomicilio().getLocalidad());
-                domicilioActualizado.setProvincia(paciente.getDomicilio().getProvincia());
-
-                pacienteActualizado.setDomicilio(domicilioActualizado);
-            }
-
-            pacienteService.actualizarPaciente(pacienteActualizado);
+            pacienteService.actualizarPaciente(paciente);
 
             String jsonResponse = "{\"mensaje\": \"Paciente actualizado\"}";
             return ResponseEntity.ok(jsonResponse);

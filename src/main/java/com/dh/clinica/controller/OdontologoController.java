@@ -45,11 +45,7 @@ public class OdontologoController {
         if (odontologoEncontrado.isPresent()) {
             Odontologo odontologoActualizado = odontologoEncontrado.get();
 
-            odontologoActualizado.setMatricula(odontologo.getMatricula());
-            odontologoActualizado.setNombre(odontologo.getNombre());
-            odontologoActualizado.setApellido(odontologo.getApellido());
-
-            odontologoService.actualizarOdontologo(odontologoActualizado);
+            odontologoService.actualizarOdontologo(odontologo);
 
             String jsonResponse = "{\"mensaje\": \"Odontólogo actualizado\"}";
             return ResponseEntity.ok(jsonResponse);
