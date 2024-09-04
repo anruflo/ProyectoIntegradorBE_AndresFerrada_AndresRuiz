@@ -43,7 +43,14 @@ public class OdontologoController {
         Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
 
         if (odontologoEncontrado.isPresent()) {
-            odontologoService.actualizarOdontologo(odontologoEncontrado.get());
+            Odontologo odontologoActualizado = odontologoEncontrado.get();
+
+            odontologoActualizado.setMatricula(odontologo.getMatricula());
+            odontologoActualizado.setNombre(odontologo.getNombre());
+            odontologoActualizado.setApellido(odontologo.getApellido());
+
+            odontologoService.actualizarOdontologo(odontologoActualizado);
+
             String jsonResponse = "{\"mensaje\": \"Odontólogo actualizado\"}";
             return ResponseEntity.ok(jsonResponse);
         } else {
