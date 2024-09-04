@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/turnos")
@@ -32,7 +33,27 @@ public class TurnoController {
         return ResponseEntity.ok(turnoService.listarTodos());
     }
 
-    // Completar las operaciones que faltan
+    @GetMapping("buscar/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        Optional<Turno> turno = turnoService.buscarPorId(id);
 
+        if (turno.isPresent()) {
+            return ResponseEntity.ok(turno.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turno no encontrado");
+        }
+    }
+
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> actualizarTurno(@RequestBody Turno turno) {
+        turnoService.actualizarTurno(turno);
+        return ResponseEntity.ok("Turno actualizado con éxito");
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarTurno(@PathVariable Integer id) {
+        turnoService.eliminarTurno(id);
+        return ResponseEntity.ok("Turno eliminado con éxito");
+    }
 
 }
