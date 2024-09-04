@@ -28,8 +28,9 @@ public class TurnoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Paciente u odontólogo no fueron encontrados");
         }
     }
+
     @GetMapping("/lista")
-    public ResponseEntity<List<Turno>> buscarTodos(){
+    public ResponseEntity<List<Turno>> buscarTodos() {
         return ResponseEntity.ok(turnoService.listarTodos());
     }
 
@@ -61,5 +62,10 @@ public class TurnoController {
         }
 
         return ResponseEntity.ok("Turno eliminado con éxito");
+    }
+
+    @GetMapping("/lista/{apellido}")
+    public ResponseEntity<List<Turno>> buscarTurnoPorApellidoPaciente(@PathVariable String apellido) {
+        return ResponseEntity.ok(turnoService.buscarTurnoPaciente(apellido));
     }
 }

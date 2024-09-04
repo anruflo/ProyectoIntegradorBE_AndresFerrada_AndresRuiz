@@ -66,4 +66,9 @@ public class TurnoService implements ITurnoService {
         turnoRepository.deleteById(id);
     }
 
+    @Override
+    public List<Turno> buscarTurnoPaciente(String apellidoPaciente) {
+        return turnoRepository.buscarTurnoPorApellidoPaciente(apellidoPaciente);
+    }
+
 }
