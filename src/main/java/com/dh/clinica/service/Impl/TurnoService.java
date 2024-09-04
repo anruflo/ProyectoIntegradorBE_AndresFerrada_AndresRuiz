@@ -4,6 +4,7 @@ package com.dh.clinica.service.Impl;
 import com.dh.clinica.entity.Odontologo;
 import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.entity.Turno;
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.ITurnoRepository;
 import com.dh.clinica.service.ITurnoService;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,14 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public void eliminarTurno(Integer id) {
+        Optional<Turno> turno = turnoRepository.findById(id);
+
+        if (turno.isPresent()) {
+            turnoRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("{\"mensaje\": \"Turno no encontrado\"}");
+        }
+
         turnoRepository.deleteById(id);
     }
 
