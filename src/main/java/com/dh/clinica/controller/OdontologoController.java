@@ -56,15 +56,10 @@ public class OdontologoController {
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarOdontologo(@PathVariable Integer id) {
-        Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(id);
-
-        if (odontologoEncontrado.isPresent()) {
             odontologoService.eliminarOdontologo(id);
             String jsonResponse = "{\"mensaje\": \"Odontólogo eliminado\"}";
             return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.status(404).build();
-        }
+
     }
 
 
