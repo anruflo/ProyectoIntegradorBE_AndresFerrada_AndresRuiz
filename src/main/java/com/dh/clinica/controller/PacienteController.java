@@ -72,4 +72,9 @@ public class PacienteController {
     public ResponseEntity<List<Paciente>> buscarNombreLike(@PathVariable String nombre){
         return ResponseEntity.ok(pacienteService.buscarLikeNombre(nombre));
     }
+
+    @GetMapping("/dni/{dni}")
+    public ResponseEntity<List<Paciente>> buscarPorDni(@PathVariable String dni){
+        return ResponseEntity.ok(pacienteService.buscarPorDni(dni));
+    }
 }

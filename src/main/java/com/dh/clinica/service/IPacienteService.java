@@ -22,4 +22,6 @@ public interface IPacienteService {
     @Query("select p from Paciente p where p.nombre like %:nombre%")
     List<Paciente> buscarLikeNombre(String nombre);
 
+    List<Paciente> buscarPorDni(String dni);
+
 }

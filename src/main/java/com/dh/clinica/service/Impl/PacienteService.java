@@ -57,4 +57,9 @@ public class PacienteService implements IPacienteService {
     public List<Paciente> buscarLikeNombre(String nombre) {
         return pacienteRepository.findByNombreLike(nombre);
     }
+
+    @Override
+    public List<Paciente> buscarPorDni(String dni) {
+        return pacienteRepository.findByDni(dni);
+    }
 }
