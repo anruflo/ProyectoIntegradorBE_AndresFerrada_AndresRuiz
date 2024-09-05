@@ -44,7 +44,7 @@ public class PacienteService implements IPacienteService {
         if (pacienteEncontrado.isPresent()) {
             pacienteRepository.deleteById(id);
         } else {
-            throw new ResourceNotFoundException("{\"mensaje\": \"Paciente no encontrado\"}");
+            throw new ResourceNotFoundException("Paciente " + id + " no encontrado");
         }
     }
 
