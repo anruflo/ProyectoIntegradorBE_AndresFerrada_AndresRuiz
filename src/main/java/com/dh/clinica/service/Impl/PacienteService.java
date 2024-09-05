@@ -1,6 +1,7 @@
 package com.dh.clinica.service.Impl;
 
 import com.dh.clinica.entity.Paciente;
+import com.dh.clinica.exception.BadRequestException;
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.IPacienteRepository;
 import com.dh.clinica.service.IPacienteService;
@@ -22,6 +23,18 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public Paciente guardarPaciente(Paciente paciente) {
+
+        if(paciente.getNombre() == null || paciente.getNombre().isEmpty()){
+            throw new BadRequestException("Nombre no puede estar vacío");
+        }
+        if(paciente.getApellido() == null || paciente.getApellido().isEmpty()){
+            throw new BadRequestException("Apellido no puede estar vacío");
+        }
+        if(paciente.getDomicilio() == null){
+            throw new BadRequestException("Paciente debe tener domicilio");
+        }
+
+
         Paciente pacienteGuardado = pacienteRepository.save(paciente);
         logger.info("Paciente guardado: " + pacienteGuardado.toString());
         return pacienteGuardado;
