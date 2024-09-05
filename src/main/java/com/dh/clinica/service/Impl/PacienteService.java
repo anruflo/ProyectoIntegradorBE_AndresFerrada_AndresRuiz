@@ -4,6 +4,8 @@ import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.IPacienteRepository;
 import com.dh.clinica.service.IPacienteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class PacienteService implements IPacienteService {
+    private final Logger logger = LoggerFactory.getLogger(PacienteService.class);
     private IPacienteRepository pacienteRepository;
 
     public PacienteService(IPacienteRepository pacienteRepository) {
@@ -19,7 +22,9 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public Paciente guardarPaciente(Paciente paciente) {
-        return pacienteRepository.save(paciente);
+        Paciente pacienteGuardado = pacienteRepository.save(paciente);
+        logger.info("Paciente guardado: " + pacienteGuardado.toString());
+        return pacienteGuardado;
     }
 
     @Override
