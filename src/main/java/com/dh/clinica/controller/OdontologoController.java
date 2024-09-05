@@ -73,4 +73,22 @@ public class OdontologoController {
         return ResponseEntity.ok(odontologoService.buscarPorNumeroMatricula(matricula));
     }
 
+    @GetMapping("/apellidoYNombre")
+    public ResponseEntity<List<Odontologo>> buscarPorApellidoYNombre(@RequestParam String apellido, @RequestParam String nombre) {
+        return ResponseEntity.ok(odontologoService.buscarPorApellidoYNombre(apellido, nombre));
+    }
+
+    @GetMapping("/apellido/{apellido}")
+    public ResponseEntity<List<Odontologo>> buscarPorApellido(@PathVariable String apellido) {
+        return ResponseEntity.ok(odontologoService.buscarPorApellido(apellido));
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<Odontologo>> buscarPorNombre(@PathVariable String nombre) {
+        return ResponseEntity.ok(odontologoService.buscarPorNombre(nombre));
+    }
+
+
+
+
 }
