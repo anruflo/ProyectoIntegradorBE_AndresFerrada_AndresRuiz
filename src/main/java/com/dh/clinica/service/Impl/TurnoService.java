@@ -7,6 +7,8 @@ import com.dh.clinica.entity.Turno;
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.ITurnoRepository;
 import com.dh.clinica.service.ITurnoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class TurnoService implements ITurnoService {
+    // hacer Logger en cada uno de los servicios
+    private final Logger logger = LoggerFactory.getLogger(TurnoService.class);
     private ITurnoRepository turnoRepository;
     private PacienteService pacienteService;
     private OdontologoService odontologoService;
@@ -35,6 +39,8 @@ public class TurnoService implements ITurnoService {
             turno.setPaciente(paciente.get());
             turno.setOdontologo(odontologo.get());
             turnoARetornar = turnoRepository.save(turno);
+
+            logger.info("turno guardado: " + turnoARetornar);
         }
 
         return turnoARetornar;
@@ -47,6 +53,8 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<Turno> listarTodos() {
+        List<Turno> turnos = turnoRepository.findAll();
+        logger.info("turnos: " + turnos);
         return turnoRepository.findAll();
     }
 
@@ -69,7 +77,7 @@ public class TurnoService implements ITurnoService {
         if (turno.isPresent()) {
             turnoRepository.deleteById(id);
         } else {
-            throw new ResourceNotFoundException("{\"mensaje\": \"Turno no encontrado\"}");
+            throw new ResourceNotFoundException("Turno " + id + " no encontrado");
         }
 
         turnoRepository.deleteById(id);
