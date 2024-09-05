@@ -62,4 +62,5 @@ public class PacienteService implements IPacienteService {
     public List<Paciente> buscarPorDni(String dni) {
         return pacienteRepository.findByDni(dni);
     }
+
 }

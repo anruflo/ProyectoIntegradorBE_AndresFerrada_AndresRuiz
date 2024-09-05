@@ -67,4 +67,10 @@ public class OdontologoController {
         }
     }
 
+
+    @GetMapping("/matricula/{matricula}")
+    public ResponseEntity<List<Odontologo>> buscarPorNumeroMatricula(@PathVariable Integer matricula) {
+        return ResponseEntity.ok(odontologoService.buscarPorNumeroMatricula(matricula));
+    }
+
 }
