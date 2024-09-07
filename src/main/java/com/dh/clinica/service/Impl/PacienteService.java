@@ -42,17 +42,21 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public Optional<Paciente> buscarPorId(Integer id) {
-        return pacienteRepository.findById(id);
+        Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
+        logger.info("Paciente encontrado: " + pacienteEncontrado.get());
+        return pacienteEncontrado;
     }
 
     @Override
     public List<Paciente> listarTodos() {
+        logger.info("Listando todos los pacientes");
         return pacienteRepository.findAll();
     }
 
     @Override
     public void actualizarPaciente(Paciente paciente) {
-       pacienteRepository.save(paciente);
+        Paciente pacienteActualizado = pacienteRepository.save(paciente);
+        logger.info("Paciente actualizado: " + pacienteActualizado.toString());
     }
 
     @Override
@@ -61,23 +65,28 @@ public class PacienteService implements IPacienteService {
 
         if (pacienteEncontrado.isPresent()) {
             pacienteRepository.deleteById(id);
+            logger.info("Paciente con ID: " + id +" eliminado");
         } else {
+            logger.error("Error al eliminar paciente con ID: " + id);
             throw new ResourceNotFoundException("Paciente " + id + " no encontrado");
         }
     }
 
     @Override
     public List<Paciente> buscarPorApellidoYNombre(String apellido, String nombre) {
+        logger.info("Buscando pacientes con apellido y nombre: " + apellido, nombre);
         return pacienteRepository.findByApellidoAndNombre(apellido, nombre);
     }
 
     @Override
     public List<Paciente> buscarLikeNombre(String nombre) {
+        logger.info("Buscando pacientes con nombre: " + nombre);
         return pacienteRepository.findByNombreLike(nombre);
     }
 
     @Override
     public List<Paciente> buscarPorDni(String dni) {
+        logger.info("Buscando paciente con DNI: " + dni);
         return pacienteRepository.findByDni(dni);
     }
 

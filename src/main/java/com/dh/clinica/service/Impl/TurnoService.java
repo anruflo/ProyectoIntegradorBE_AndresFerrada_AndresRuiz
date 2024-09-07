@@ -48,7 +48,9 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public Optional<Turno> buscarPorId(Integer id) {
-        return turnoRepository.findById(id);
+        Optional<Turno> turnoEncontrado = turnoRepository.findById(id);
+        logger.info("Turno encontrado: " + turnoEncontrado.get());
+        return turnoEncontrado;
     }
 
     @Override
@@ -63,10 +65,13 @@ public class TurnoService implements ITurnoService {
         Optional<Paciente> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
 
+        Turno turnoActualizado = null;
+
         if (paciente.isPresent() && odontologo.isPresent()) {
             turno.setPaciente(paciente.get());
             turno.setOdontologo(odontologo.get());
-            turnoRepository.save(turno);
+            turnoActualizado = turnoRepository.save(turno);
+            logger.info("Turno actualizado: " + turnoActualizado);
         }
     }
 
@@ -76,15 +81,16 @@ public class TurnoService implements ITurnoService {
 
         if (turno.isPresent()) {
             turnoRepository.deleteById(id);
+            logger.info("Turno con ID: " + id + " eliminado");
         } else {
+            logger.info("Error al eliminar turno con ID: " + id);
             throw new ResourceNotFoundException("Turno " + id + " no encontrado");
         }
-
-        turnoRepository.deleteById(id);
     }
 
     @Override
     public List<Turno> buscarTurnoPaciente(String apellidoPaciente) {
+        logger.info("Buscando turnos de pacientes con apellido: " + apellidoPaciente);
         return turnoRepository.buscarTurnoPorApellidoPaciente(apellidoPaciente);
     }
 
