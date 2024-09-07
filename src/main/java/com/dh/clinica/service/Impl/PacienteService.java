@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class PacienteService implements IPacienteService {
     private final Logger logger = LoggerFactory.getLogger(PacienteService.class);
-    private IPacienteRepository pacienteRepository;
+    private final IPacienteRepository pacienteRepository;
 
     public PacienteService(IPacienteRepository pacienteRepository) {
         this.pacienteRepository = pacienteRepository;
@@ -24,26 +24,24 @@ public class PacienteService implements IPacienteService {
     @Override
     public Paciente guardarPaciente(Paciente paciente) {
 
-        if(paciente.getNombre() == null || paciente.getNombre().isEmpty()){
-            throw new BadRequestException("Nombre no puede estar vacío");
-        }
-        if(paciente.getApellido() == null || paciente.getApellido().isEmpty()){
-            throw new BadRequestException("Apellido no puede estar vacío");
-        }
-        if(paciente.getDomicilio() == null){
-            throw new BadRequestException("Paciente debe tener domicilio");
-        }
-
+        validarPaciente(paciente);
 
         Paciente pacienteGuardado = pacienteRepository.save(paciente);
-        logger.info("Paciente guardado: " + pacienteGuardado.toString());
+
+        logger.info("Paciente guardado: {}", pacienteGuardado);
         return pacienteGuardado;
     }
 
     @Override
     public Optional<Paciente> buscarPorId(Integer id) {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
-        logger.info("Paciente encontrado: {}", pacienteEncontrado.get());
+
+        if(pacienteEncontrado.isPresent()){
+            logger.info("Paciente encontradoo: {}", pacienteEncontrado.get());
+        } else{
+            logger.info("Paciente con id {} no ha sido encontrado", id);
+        }
+
         return pacienteEncontrado;
     }
 
@@ -54,7 +52,7 @@ public class PacienteService implements IPacienteService {
         if(pacientes.isEmpty()){
             logger.info("No se encontraron pacientes");
         } else {
-            logger.info("Se encontraron {} pacientes", pacientes.size());
+            logger.info("{} pacientes en la lista", pacientes.size());
         }
 
         return pacientes;
@@ -62,15 +60,17 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public void actualizarPaciente(Paciente paciente) {
+        validarPaciente(paciente);
+
         Paciente pacienteActualizado = pacienteRepository.save(paciente);
-        logger.info("Paciente actualizado: " + pacienteActualizado.toString());
+        logger.info("Paciente actualizado: {}", pacienteActualizado);
     }
 
     @Override
     public void eliminarPaciente(Integer id) {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
 
-        if (!pacienteEncontrado.isPresent()) {
+        if (pacienteEncontrado.isEmpty()) {
             logger.error("Error al eliminar paciente con ID {}",id);
             throw new ResourceNotFoundException("Paciente " + id + " no encontrado");
         }
@@ -88,7 +88,7 @@ public class PacienteService implements IPacienteService {
             throw new ResourceNotFoundException("Paciente no encontrado");
         }
 
-        logger.info("Paciente " + apellido + ", " + nombre + " encontrado");
+        logger.info("Paciente {}, {} encontrado", apellido, nombre);
         return pacienteEncontrado;
     }
 
@@ -111,11 +111,25 @@ public class PacienteService implements IPacienteService {
         List<Paciente> pacienteEncontrado = pacienteRepository.findByDni(dni);
 
         if(pacienteEncontrado.isEmpty()){
-            logger.info("Paciente con dni {} no ha sido encontrado", dni);
+            logger.info("No hay paciente con DNI {}", dni);
         } else {
-            logger.info("Paciente con dni {} encontrado", dni);
+            logger.info("Paciente con DNI {} encontrado", dni);
         }
         return pacienteEncontrado;
     }
 
+    private void validarPaciente(Paciente paciente) {
+        if(paciente.getNombre() == null || paciente.getNombre().isEmpty()){
+            logger.error("Nombre no puede estar vacío");
+            throw new BadRequestException("Nombre no puede estar vacío");
+        }
+        if(paciente.getApellido() == null || paciente.getApellido().isEmpty()){
+            logger.error("Apellido no puede estar vacío");
+            throw new BadRequestException("Apellido no puede estar vacío");
+        }
+        if(paciente.getDomicilio() == null){
+            logger.error("Domicilio no puede estar vacío");
+            throw new BadRequestException("Paciente debe tener domicilio");
+        }
+    }
 }
