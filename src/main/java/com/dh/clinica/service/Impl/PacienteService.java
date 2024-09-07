@@ -52,7 +52,7 @@ public class PacienteService implements IPacienteService {
         if(pacientes.isEmpty()){
             logger.info("No se encontraron pacientes");
         } else {
-            logger.info("{} pacientes en la lista", pacientes.size());
+            logger.info("Se encontraron {} pacientes en la lista", pacientes.size());
         }
 
         return pacientes;
@@ -60,8 +60,8 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public void actualizarPaciente(Paciente paciente) {
-
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(paciente.getId());
+
         validarPaciente(paciente);
 
         if(pacienteEncontrado.isPresent()){
@@ -71,20 +71,19 @@ public class PacienteService implements IPacienteService {
             logger.error("Paciente no encontrado. No se ha podido actualizar");
             throw new ResourceNotFoundException("Paciente no encontrado");
         }
-
     }
 
     @Override
     public void eliminarPaciente(Integer id) {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
 
-        if (pacienteEncontrado.isEmpty()) {
+        if(pacienteEncontrado.isPresent()){
+            pacienteRepository.deleteById(id);
+            logger.info("Paciente con ID {} eliminado", id);
+        } else{
             logger.error("Error al eliminar paciente con ID {}",id);
             throw new ResourceNotFoundException("Paciente " + id + " no encontrado");
         }
-
-        pacienteRepository.deleteById(id);
-        logger.info("Paciente con ID {} eliminado", id);
     }
 
     @Override
