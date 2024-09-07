@@ -1,44 +1,53 @@
 package com.dh.clinica;
-/*
 
-import com.dh.clinica.dao.Impl.OdontologoDaoH2;
-import com.dh.clinica.db.H2Connection;
+
 import com.dh.clinica.entity.Odontologo;
-import com.dh.clinica.service.OdontologoService;
-import org.junit.jupiter.api.BeforeAll;
+import com.dh.clinica.service.Impl.OdontologoService;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@Transactional
 class OdontologoServiceTest {
 
-    static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
-    OdontologoService odontologoService = new OdontologoService(new OdontologoDaoH2());
+    @Autowired
+    OdontologoService odontologoService;
+    Odontologo odontologo;
+    Odontologo odontologoDesdeDb;
 
-    @BeforeAll
-    static void tablas(){
-        H2Connection.crearTablas();
+
+    @BeforeEach
+    void crearOdontologo(){
+        odontologo = new Odontologo();
+        odontologo.setMatricula(123);
+        odontologo.setNombre("Juan");
+        odontologo.setApellido("Perez");
+        odontologoDesdeDb = odontologoService.guardarOdontologo(odontologo);
     }
 
+
     @Test
-    @DisplayName("Testear que Odontólogo se ha guardado en base de datos")
+    @DisplayName("Testear que Odontólogo se guarde en la base de datos")
 
     void testInsertarDatos(){
-        Odontologo odontologo = new Odontologo(666, "María", "Perez");
-        Odontologo odontologoGuardadoDB = odontologoService.guardarOdontologo(odontologo);
-
-        assertNotNull(odontologoGuardadoDB.getId());
-        assertTrue(odontologoGuardadoDB.getId() > 0);
-        assertEquals(3, odontologoGuardadoDB.getId());
+        assertNotNull(odontologoDesdeDb.getId());
+        assertTrue(odontologoDesdeDb.getId() > 0);
+        assertEquals(1, odontologoDesdeDb.getId());
     }
 
     @Test
-    @DisplayName("Testear enlistado de todos los elementos")
+    @DisplayName("Testear el listado de todos los elementos")
 
     void testListarTodos(){
         List<Odontologo> odontologos = odontologoService.listarTodos();
@@ -47,4 +56,4 @@ class OdontologoServiceTest {
 
     }
 
-}*/
+}
