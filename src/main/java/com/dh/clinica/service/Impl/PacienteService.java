@@ -74,8 +74,15 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public List<Paciente> buscarPorApellidoYNombre(String apellido, String nombre) {
-        logger.info("Buscando pacientes con apellido y nombre: " + apellido, nombre);
-        return pacienteRepository.findByApellidoAndNombre(apellido, nombre);
+        List<Paciente> pacienteEncontrado = pacienteRepository.findByApellidoAndNombre(apellido, nombre);
+
+        if(pacienteEncontrado.isEmpty()){
+            logger.info("Paciente no encontrado");
+            throw new ResourceNotFoundException("Paciente no encontrado");
+        }
+
+        logger.info("Paciente " + apellido + ", " + nombre + " encontrado");
+        return pacienteEncontrado;
     }
 
     @Override

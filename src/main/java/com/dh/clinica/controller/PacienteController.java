@@ -63,7 +63,7 @@ public class PacienteController {
             return ResponseEntity.ok("{\"mensaje\": \"Paciente eliminado\"}");
     }
 
-    @GetMapping("/buscarApellidoNombre")
+    @GetMapping("/buscarApellidoNombre/")
     public ResponseEntity<List<Paciente>> buscarApellidoYNombre(@RequestParam String apellido, @RequestParam String nombre){
         return ResponseEntity.ok(pacienteService.buscarPorApellidoYNombre(apellido, nombre));
     }
