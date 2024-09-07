@@ -43,14 +43,21 @@ public class PacienteService implements IPacienteService {
     @Override
     public Optional<Paciente> buscarPorId(Integer id) {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
-        logger.info("Paciente encontrado: " + pacienteEncontrado.get());
+        logger.info("Paciente encontrado: {}", pacienteEncontrado.get());
         return pacienteEncontrado;
     }
 
     @Override
     public List<Paciente> listarTodos() {
-        logger.info("Listando todos los pacientes");
-        return pacienteRepository.findAll();
+        List<Paciente> pacientes = pacienteRepository.findAll();
+
+        if(pacientes.isEmpty()){
+            logger.info("No se encontraron pacientes");
+        } else {
+            logger.info("Se encontraron {} pacientes", pacientes.size());
+        }
+
+        return pacientes;
     }
 
     @Override
@@ -63,13 +70,13 @@ public class PacienteService implements IPacienteService {
     public void eliminarPaciente(Integer id) {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
 
-        if (pacienteEncontrado.isPresent()) {
-            pacienteRepository.deleteById(id);
-            logger.info("Paciente con ID: " + id +" eliminado");
-        } else {
-            logger.error("Error al eliminar paciente con ID: " + id);
+        if (!pacienteEncontrado.isPresent()) {
+            logger.error("Error al eliminar paciente con ID {}",id);
             throw new ResourceNotFoundException("Paciente " + id + " no encontrado");
         }
+
+        pacienteRepository.deleteById(id);
+        logger.info("Paciente con ID {} eliminado", id);
     }
 
     @Override
@@ -87,14 +94,28 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public List<Paciente> buscarLikeNombre(String nombre) {
-        logger.info("Buscando pacientes con nombre: " + nombre);
-        return pacienteRepository.findByNombreLike(nombre);
+        List<Paciente> pacientes = pacienteRepository.findByNombreLike(nombre);
+
+        if(pacientes.isEmpty()){
+            logger.info("No se encontraron pacientes con el nombre similar a: {}", nombre);
+        } else{
+            logger.info("Se encontraron {} pacientes con el nombre similar a: {}", pacientes.size(), nombre);
+            logger.info("lista de pacientes encontrados: {}", pacientes);
+        }
+
+        return pacientes;
     }
 
     @Override
     public List<Paciente> buscarPorDni(String dni) {
-        logger.info("Buscando paciente con DNI: " + dni);
-        return pacienteRepository.findByDni(dni);
+        List<Paciente> pacienteEncontrado = pacienteRepository.findByDni(dni);
+
+        if(pacienteEncontrado.isEmpty()){
+            logger.info("Paciente con dni {} no ha sido encontrado", dni);
+        } else {
+            logger.info("Paciente con dni {} encontrado", dni);
+        }
+        return pacienteEncontrado;
     }
 
 }
