@@ -60,10 +60,18 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public void actualizarPaciente(Paciente paciente) {
+
+        Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(paciente.getId());
         validarPaciente(paciente);
 
-        Paciente pacienteActualizado = pacienteRepository.save(paciente);
-        logger.info("Paciente actualizado: {}", pacienteActualizado);
+        if(pacienteEncontrado.isPresent()){
+            Paciente pacienteActualizado = pacienteRepository.save(paciente);
+            logger.info("Paciente actualizado: {}", pacienteActualizado);
+        } else {
+            logger.error("Paciente no encontrado. No se ha podido actualizar");
+            throw new ResourceNotFoundException("Paciente no encontrado");
+        }
+
     }
 
     @Override

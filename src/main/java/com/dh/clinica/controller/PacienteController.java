@@ -43,18 +43,8 @@ public class PacienteController {
 
     @PutMapping("/actualizar")
     public ResponseEntity<?> actualizarPaciente(@RequestBody Paciente paciente) {
-        Optional<Paciente> pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
-
-        if (pacienteEncontrado.isPresent()) {
-            Paciente pacienteActualizado = pacienteEncontrado.get();
-
             pacienteService.actualizarPaciente(paciente);
-
-            String jsonResponse = "{\"mensaje\": \"Paciente actualizado\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
-        }
+            return ResponseEntity.ok("{\"mensaje\": \"Paciente actualizado\"}");
     }
 
     @DeleteMapping("/eliminar/{id}")
