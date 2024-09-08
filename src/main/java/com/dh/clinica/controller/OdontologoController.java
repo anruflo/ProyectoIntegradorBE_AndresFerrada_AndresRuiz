@@ -11,7 +11,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/odontologo")
 public class OdontologoController {
-    private OdontologoService odontologoService;
+    private final OdontologoService odontologoService;
 
     public OdontologoController(OdontologoService odontologoService) {
         this.odontologoService = odontologoService;

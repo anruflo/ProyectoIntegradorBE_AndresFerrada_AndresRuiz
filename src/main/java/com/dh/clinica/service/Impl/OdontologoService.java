@@ -2,7 +2,6 @@ package com.dh.clinica.service.Impl;
 
 
 import com.dh.clinica.entity.Odontologo;
-import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.exception.BadRequestException;
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.IOdontologoRepository;
