@@ -4,6 +4,7 @@ package com.dh.clinica.service.Impl;
 import com.dh.clinica.entity.Odontologo;
 import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.entity.Turno;
+import com.dh.clinica.exception.BadRequestException;
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.ITurnoRepository;
 import com.dh.clinica.service.ITurnoService;
@@ -11,16 +12,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TurnoService implements ITurnoService {
-    // hacer Logger en cada uno de los servicios
     private final Logger logger = LoggerFactory.getLogger(TurnoService.class);
-    private ITurnoRepository turnoRepository;
-    private PacienteService pacienteService;
-    private OdontologoService odontologoService;
+    private final ITurnoRepository turnoRepository;
+    private final PacienteService pacienteService;
+    private final OdontologoService odontologoService;
 
     public TurnoService(ITurnoRepository turnoRepository, PacienteService pacienteService, OdontologoService odontologoService) {
         this.turnoRepository = turnoRepository;
@@ -33,14 +34,22 @@ public class TurnoService implements ITurnoService {
         Optional<Paciente> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
 
-        Turno turnoARetornar = null;
+        Turno turnoARetornar;
+
+        if(turno.getFecha() == null || turno.getFecha().isBefore(LocalDate.now())) {
+            logger.error("No se puede guardar turno. La fecha no puede ser anterior a la actual");
+            throw new BadRequestException("La fecha no puede ser anterior a la actual");
+        }
 
         if (paciente.isPresent() && odontologo.isPresent()) {
             turno.setPaciente(paciente.get());
             turno.setOdontologo(odontologo.get());
             turnoARetornar = turnoRepository.save(turno);
 
-            logger.info("turno guardado: " + turnoARetornar);
+            logger.info("turno guardado: {}", turnoARetornar);
+        } else{
+            logger.error("No se puede guardar turno. Paciente u odontólogo no encontrado");
+            throw new ResourceNotFoundException("Paciente u odontólogo no encontrados");
         }
 
         return turnoARetornar;
@@ -49,14 +58,20 @@ public class TurnoService implements ITurnoService {
     @Override
     public Optional<Turno> buscarPorId(Integer id) {
         Optional<Turno> turnoEncontrado = turnoRepository.findById(id);
-        logger.info("Turno encontrado: " + turnoEncontrado.get());
+
+        if(turnoEncontrado.isPresent()){
+            logger.info("Turno encontrado: {}", turnoEncontrado.get());
+        } else {
+            logger.info("Turno con id {} no ha sido encontrado", id);
+            throw new ResourceNotFoundException("Turno " + id + " no encontrado");
+        }
         return turnoEncontrado;
     }
 
     @Override
     public List<Turno> listarTodos() {
         List<Turno> turnos = turnoRepository.findAll();
-        logger.info("turnos: " + turnos);
+        logger.info("turnos: {}", turnos);
         return turnoRepository.findAll();
     }
 
@@ -65,13 +80,11 @@ public class TurnoService implements ITurnoService {
         Optional<Paciente> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
 
-        Turno turnoActualizado = null;
-
         if (paciente.isPresent() && odontologo.isPresent()) {
             turno.setPaciente(paciente.get());
             turno.setOdontologo(odontologo.get());
-            turnoActualizado = turnoRepository.save(turno);
-            logger.info("Turno actualizado: " + turnoActualizado);
+            Turno turnoActualizado = turnoRepository.save(turno);
+            logger.info("Turno actualizado: {}", turnoActualizado);
         }
     }
 
@@ -81,17 +94,24 @@ public class TurnoService implements ITurnoService {
 
         if (turno.isPresent()) {
             turnoRepository.deleteById(id);
-            logger.info("Turno con ID: " + id + " eliminado");
+            logger.info("Turno con ID {} eliminado", id);
         } else {
-            logger.info("Error al eliminar turno con ID: " + id);
+            logger.info("Error al eliminar turno con ID {}", id);
             throw new ResourceNotFoundException("Turno " + id + " no encontrado");
         }
     }
 
     @Override
     public List<Turno> buscarTurnoPaciente(String apellidoPaciente) {
-        logger.info("Buscando turnos de pacientes con apellido: " + apellidoPaciente);
-        return turnoRepository.buscarTurnoPorApellidoPaciente(apellidoPaciente);
+        List<Turno> turnos = turnoRepository.buscarTurnoPorApellidoPaciente(apellidoPaciente);
+
+        if(turnos.isEmpty()){
+            logger.info("No se encontraron turnos para el paciente con apellido: {}", apellidoPaciente);
+            throw new ResourceNotFoundException("No se encontraron turnos para el paciente con apellido: " + apellidoPaciente);
+        }
+
+        logger.info("Turnos de paciente con apellido {}", apellidoPaciente);
+        return turnos;
     }
 
 }

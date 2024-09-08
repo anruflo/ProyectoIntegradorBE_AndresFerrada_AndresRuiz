@@ -1,6 +1,4 @@
 package com.dh.clinica.entity;
-import com.dh.clinica.entity.Odontologo;
-import com.dh.clinica.entity.Paciente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
