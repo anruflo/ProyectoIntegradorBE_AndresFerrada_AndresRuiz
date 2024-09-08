@@ -37,7 +37,7 @@ public class PacienteService implements IPacienteService {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
 
         if(pacienteEncontrado.isPresent()){
-            logger.info("Paciente encontradoo: {}", pacienteEncontrado.get());
+            logger.info("Paciente encontrado: {}", pacienteEncontrado.get());
         } else{
             logger.info("Paciente con id {} no ha sido encontrado", id);
         }
