@@ -40,18 +40,9 @@ public class OdontologoController {
 
     @PutMapping("/actualizar")
     public ResponseEntity<?> actualizarOdontologo(@RequestBody Odontologo odontologo) {
-        Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
-
-        if (odontologoEncontrado.isPresent()) {
-            Odontologo odontologoActualizado = odontologoEncontrado.get();
-
             odontologoService.actualizarOdontologo(odontologo);
 
-            String jsonResponse = "{\"mensaje\": \"Odontólogo actualizado\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.status(404).build();
-        }
+            return ResponseEntity.ok("{\"mensaje\": \"Odontólogo actualizado\"}");
     }
 
     @DeleteMapping("/eliminar/{id}")
@@ -61,7 +52,6 @@ public class OdontologoController {
             return ResponseEntity.ok(jsonResponse);
 
     }
-
 
     @GetMapping("/matricula/{matricula}")
     public ResponseEntity<List<Odontologo>> buscarPorNumeroMatricula(@PathVariable Integer matricula) {
@@ -82,8 +72,4 @@ public class OdontologoController {
     public ResponseEntity<List<Odontologo>> buscarPorNombre(@PathVariable String nombre) {
         return ResponseEntity.ok(odontologoService.buscarPorNombre(nombre));
     }
-
-
-
-
 }
