@@ -1,6 +1,5 @@
 package com.dh.clinica.controller;
 
-import com.dh.clinica.entity.Domicilio;
 import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.service.Impl.PacienteService;
 import org.springframework.http.HttpStatusCode;
@@ -13,7 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
-    private PacienteService pacienteService;
+    private final PacienteService pacienteService;
 
     public PacienteController(PacienteService pacienteService){
         this.pacienteService = pacienteService;
@@ -58,13 +57,23 @@ public class PacienteController {
         return ResponseEntity.ok(pacienteService.buscarPorApellidoYNombre(apellido, nombre));
     }
 
-    @GetMapping("/buscarNombre/{nombre}")
-    public ResponseEntity<List<Paciente>> buscarNombreLike(@PathVariable String nombre){
-        return ResponseEntity.ok(pacienteService.buscarLikeNombre(nombre));
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<Paciente>> buscarPorNombre(@PathVariable String nombre){
+        return ResponseEntity.ok(pacienteService.buscarPorNombre(nombre));
+    }
+
+    @GetMapping("/apellido/{apellido}")
+    public ResponseEntity<List<Paciente>> buscarPorApellido(@PathVariable String apellido){
+        return ResponseEntity.ok(pacienteService.buscarPorApellido(apellido));
     }
 
     @GetMapping("/dni/{dni}")
     public ResponseEntity<List<Paciente>> buscarPorDni(@PathVariable String dni){
         return ResponseEntity.ok(pacienteService.buscarPorDni(dni));
+    }
+
+    @GetMapping("/nombre/contiene/{nombre}")
+    public ResponseEntity<List<Paciente>> buscarNombreLike(@PathVariable String nombre){
+        return ResponseEntity.ok(pacienteService.buscarLikeNombre(nombre));
     }
 }

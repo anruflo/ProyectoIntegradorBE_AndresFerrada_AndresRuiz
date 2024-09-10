@@ -18,10 +18,11 @@ public interface IPacienteService {
     void eliminarPaciente(Integer id);
 
     List<Paciente> buscarPorApellidoYNombre(String apellido, String nombre);
+    List<Paciente> buscarPorNombre(String nombre);
+    List<Paciente> buscarPorApellido(String apellido);
+    List<Paciente> buscarPorDni(String dni);
 
     @Query("select p from Paciente p where p.nombre like %:nombre%")
     List<Paciente> buscarLikeNombre(String nombre);
-
-    List<Paciente> buscarPorDni(String dni);
 
 }

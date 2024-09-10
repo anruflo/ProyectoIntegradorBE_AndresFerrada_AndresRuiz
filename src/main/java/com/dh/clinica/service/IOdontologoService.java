@@ -2,6 +2,7 @@ package com.dh.clinica.service;
 
 import com.dh.clinica.entity.Odontologo;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,8 @@ public interface IOdontologoService {
     List<Odontologo> buscarPorApellidoYNombre(String apellido, String nombre);
     List<Odontologo> buscarPorNombre(String nombre);
     List<Odontologo> buscarPorApellido(String apellido);
-
-
     List<Odontologo> buscarPorNumeroMatricula(Integer matricula);
+
+    @Query
+    List<Odontologo> buscarLikeNombre(String nombre);
 }

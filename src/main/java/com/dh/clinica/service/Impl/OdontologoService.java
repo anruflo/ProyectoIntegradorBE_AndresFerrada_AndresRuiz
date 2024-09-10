@@ -119,7 +119,8 @@ public class OdontologoService implements IOdontologoService {
             logger.info("No hay odontólogos con el nombre {}", nombre);
             throw new ResourceNotFoundException("No hay odontólogos con el nombre " + nombre);
         }
-        logger.info("Hay {} odontólogos con el nombre {}", odontologoEncontrado.size(), nombre);
+
+        logger.info("Se encontraron {} odontólogos con el nombre {}", odontologoEncontrado.size(), nombre);
         return odontologoEncontrado;
     }
 
@@ -135,6 +136,19 @@ public class OdontologoService implements IOdontologoService {
         return odontologoEncontrado;
     }
 
+    @Override
+    public List<Odontologo> buscarLikeNombre(String nombre) {
+        List<Odontologo> odontologos = odontologoRepository.findByNombreLike(nombre);
+
+        if(odontologos.isEmpty()){
+            logger.info("No se encontraron odontólogos con el nombre similar a: {}", nombre);
+        } else{
+            logger.info("Se encontraron {} odontólogos que contienen \"{}\" en el nombre", odontologos.size(), nombre);
+            logger.info("lista de odontólogos encontrados: {}", odontologos);
+        }
+
+        return odontologos;
+    }
 
     private void validarOdontologo(Odontologo odontologo) {
         if(odontologo.getNombre() == null || odontologo.getNombre().isEmpty()){

@@ -72,4 +72,9 @@ public class OdontologoController {
     public ResponseEntity<List<Odontologo>> buscarPorNombre(@PathVariable String nombre) {
         return ResponseEntity.ok(odontologoService.buscarPorNombre(nombre));
     }
+
+    @GetMapping("/nombre/contiene/{nombre}")
+    public ResponseEntity<List<Odontologo>> buscarNombreLike(@PathVariable String nombre) {
+        return ResponseEntity.ok(odontologoService.buscarLikeNombre(nombre));
+    }
 }

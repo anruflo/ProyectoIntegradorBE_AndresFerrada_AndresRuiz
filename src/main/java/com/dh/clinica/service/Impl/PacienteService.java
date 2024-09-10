@@ -100,17 +100,31 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public List<Paciente> buscarLikeNombre(String nombre) {
-        List<Paciente> pacientes = pacienteRepository.findByNombreLike(nombre);
+    public List<Paciente> buscarPorNombre(String nombre) {
+        List<Paciente> pacienteEncontrado = pacienteRepository.findByNombre(nombre);
 
-        if(pacientes.isEmpty()){
-            logger.info("No se encontraron pacientes con el nombre similar a: {}", nombre);
-        } else{
-            logger.info("Se encontraron {} pacientes con el nombre similar a: {}", pacientes.size(), nombre);
-            logger.info("lista de pacientes encontrados: {}", pacientes);
+        if(pacienteEncontrado.isEmpty()){
+            logger.info("No hay pacientes con el nombre {}", nombre);
+            throw new ResourceNotFoundException("No hay pacientes con el nombre " + nombre);
         }
 
-        return pacientes;
+        logger.info("Se encontraron {} pacientes con el nombre {}", pacienteEncontrado.size(), nombre);
+
+        return pacienteEncontrado;
+    }
+
+    @Override
+    public List<Paciente> buscarPorApellido(String apellido) {
+        List<Paciente> pacienteEncontrado = pacienteRepository.findByApellido(apellido);
+
+        if(pacienteEncontrado.isEmpty()){
+            logger.info("No hay pacientes con el apellido {}", apellido);
+            throw new ResourceNotFoundException("No hay pacientes con el apellido " + apellido);
+        }
+
+        logger.info("Se encontraron {} pacientes con el apellido {}", pacienteEncontrado.size(), apellido);
+
+        return pacienteEncontrado;
     }
 
     @Override
@@ -123,6 +137,21 @@ public class PacienteService implements IPacienteService {
             logger.info("Paciente con DNI {} encontrado", dni);
         }
         return pacienteEncontrado;
+    }
+
+
+    @Override
+    public List<Paciente> buscarLikeNombre(String nombre) {
+        List<Paciente> pacientes = pacienteRepository.findByNombreLike(nombre);
+
+        if(pacientes.isEmpty()){
+            logger.info("No se encontraron pacientes con el nombre similar a: {}", nombre);
+        } else{
+            logger.info("Se encontraron {} pacientes que contienen \"{}\" en el nombre", pacientes.size(), nombre);
+            logger.info("lista de pacientes encontrados: {}", pacientes);
+        }
+
+        return pacientes;
     }
 
     private void validarPaciente(Paciente paciente) {

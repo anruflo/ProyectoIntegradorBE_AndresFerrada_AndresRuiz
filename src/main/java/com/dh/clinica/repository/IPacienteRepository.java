@@ -10,9 +10,10 @@ import java.util.List;
 @Repository
 public interface IPacienteRepository extends JpaRepository<Paciente, Integer> {
     public List<Paciente> findByApellidoAndNombre(String apellido, String nombre);
+    public List<Paciente> findByNombre(String nombre);
+    public List<Paciente> findByApellido(String apellido);
+    public List<Paciente> findByDni(String dni);
 
     @Query("select p from Paciente p where p.nombre like %:nombre%")
     List<Paciente> findByNombreLike(String nombre);
-
-    public List<Paciente> findByDni(String dni);
 }
