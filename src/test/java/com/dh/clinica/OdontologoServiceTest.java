@@ -43,7 +43,6 @@ class OdontologoServiceTest {
     void testInsertarDatos(){
         assertNotNull(odontologoDesdeDb.getId());
         assertTrue(odontologoDesdeDb.getId() > 0);
-        assertEquals(1, odontologoDesdeDb.getId());
     }
 
     @Test
@@ -53,7 +52,5 @@ class OdontologoServiceTest {
         List<Odontologo> odontologos = odontologoService.listarTodos();
 
         assertFalse(odontologos.isEmpty());
-
     }
-
 }

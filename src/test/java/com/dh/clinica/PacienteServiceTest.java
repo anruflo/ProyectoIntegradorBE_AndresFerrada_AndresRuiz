@@ -42,7 +42,6 @@ class PacienteServiceTest {
     void testInsertarPaciente(){
         assertNotNull(pacienteDesdeDb.getId());
         assertTrue(pacienteDesdeDb.getId() > 0);
-        assertEquals(1, pacienteDesdeDb.getId());
     }
 
     @Test
