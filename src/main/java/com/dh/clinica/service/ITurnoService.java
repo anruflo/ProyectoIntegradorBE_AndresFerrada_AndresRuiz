@@ -16,5 +16,6 @@ public interface ITurnoService {
 
     void eliminarTurno(Integer id);
 
+    List<Turno> buscarTurnoOdontologo(String apellidoOdontologo);
     List<Turno> buscarTurnoPaciente(String apellidoPaciente);
 }

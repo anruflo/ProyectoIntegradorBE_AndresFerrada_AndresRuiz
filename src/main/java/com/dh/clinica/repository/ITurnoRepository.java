@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface ITurnoRepository extends JpaRepository<Turno, Integer> {
 
+    @Query("select t from Turno t join t.odontologo o where o.apellido = :apellidoOdontologo")
+    List<Turno> buscarTurnoPorApellidoOdontologo(String apellidoOdontologo);
+
     @Query("select t from Turno t join t.paciente p where p.apellido = :apellidoPaciente")
     List<Turno> buscarTurnoPorApellidoPaciente(String apellidoPaciente);
 

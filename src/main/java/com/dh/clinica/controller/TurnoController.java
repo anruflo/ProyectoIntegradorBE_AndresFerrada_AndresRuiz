@@ -2,7 +2,6 @@ package com.dh.clinica.controller;
 
 import com.dh.clinica.entity.Turno;
 import com.dh.clinica.service.Impl.TurnoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/turnos")
+@RequestMapping("/turno")
 public class TurnoController {
-    private TurnoService turnoService;
+    private final TurnoService turnoService;
 
     public TurnoController(TurnoService turnoService) {
         this.turnoService = turnoService;
@@ -47,7 +46,12 @@ public class TurnoController {
         return ResponseEntity.ok("{\"mensaje\": \"Turno Eliminado\"}");
     }
 
-    @GetMapping("/lista/{apellido}")
+    @GetMapping("/lista/odontologo/{apellido}")
+    public ResponseEntity<List<Turno>> buscarTurnoPorApellidoOdontologo(@PathVariable String apellido) {
+        return ResponseEntity.ok(turnoService.buscarTurnoOdontologo(apellido));
+    }
+
+    @GetMapping("/lista/paciente/{apellido}")
     public ResponseEntity<List<Turno>> buscarTurnoPorApellidoPaciente(@PathVariable String apellido) {
         return ResponseEntity.ok(turnoService.buscarTurnoPaciente(apellido));
     }

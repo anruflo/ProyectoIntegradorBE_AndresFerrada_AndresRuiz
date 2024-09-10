@@ -46,7 +46,7 @@ public class TurnoService implements ITurnoService {
             turno.setOdontologo(odontologo.get());
             turnoARetornar = turnoRepository.save(turno);
 
-            logger.info("turno guardado: {}", turnoARetornar);
+            logger.info("Turno guardado: {}", turnoARetornar);
         } else{
             logger.error("No se puede guardar turno. Paciente u odontólogo no encontrado");
             throw new ResourceNotFoundException("Paciente u odontólogo no encontrados");
@@ -102,6 +102,24 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
+    public List<Turno> buscarTurnoOdontologo(String apellidoOdontologo) {
+        List<Turno> turnos = turnoRepository.buscarTurnoPorApellidoOdontologo(apellidoOdontologo);
+
+        if(turnos.isEmpty()){
+            logger.info("No se encontraron turnos para el odontólogo con apellido: {}", apellidoOdontologo);
+            throw new ResourceNotFoundException("No se encontraron turnos para el odontólogo con apellido: " + apellidoOdontologo);
+        }
+
+        if(turnos.size() == 1){
+            logger.info("Se encontró {} turno para el odontólogo con apellido {}", turnos.size(), apellidoOdontologo);
+        } else {
+            logger.info("Se encontraron {} turnos para el odontólogo con apellido {}", turnos.size(), apellidoOdontologo);
+        }
+
+        return turnos;
+    }
+
+    @Override
     public List<Turno> buscarTurnoPaciente(String apellidoPaciente) {
         List<Turno> turnos = turnoRepository.buscarTurnoPorApellidoPaciente(apellidoPaciente);
 
@@ -110,7 +128,12 @@ public class TurnoService implements ITurnoService {
             throw new ResourceNotFoundException("No se encontraron turnos para el paciente con apellido: " + apellidoPaciente);
         }
 
-        logger.info("Turnos de paciente con apellido {}", apellidoPaciente);
+        if(turnos.size() == 1){
+            logger.info("Se encontró {} turno para el paciente con apellido {}", turnos.size(), apellidoPaciente);
+        } else {
+            logger.info("Se encontraron {} turnos para el paciente con apellido {}", turnos.size(), apellidoPaciente);
+        }
+
         return turnos;
     }
 
