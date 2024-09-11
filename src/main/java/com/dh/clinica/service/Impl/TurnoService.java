@@ -137,4 +137,26 @@ public class TurnoService implements ITurnoService {
         return turnos;
     }
 
+    @Override
+    public List<Turno> buscarTurnoDniPaciente(String dniPaciente){
+        List<Turno> turno = turnoRepository.buscarTurnoDniPaciente(dniPaciente);
+
+        if(turno.isEmpty()){
+            logger.info("No se encontró el paciente con DNI: {}", dniPaciente);
+            throw new ResourceNotFoundException("No se encontró el paciente con DNI: " + dniPaciente);
+        }
+        logger.info("Se encontró el paciente con DNI: {}", dniPaciente);
+        return turno;
+    }
+    @Override
+    public Turno buscarTurnoPorMatriculaOdontologo(Integer matricula) {
+        Turno turno = turnoRepository.buscarTurnoPorMatriculaOdontologo(matricula);
+
+        if(turno == null){
+            logger.info("No se encontró el odontólogo con la matrícula: {}", matricula);
+            throw new ResourceNotFoundException("No se encontró el odontólogo con la matrícula: " + matricula);
+        }
+        logger.info("Se encontró el odontólogo con la matrícula: {}", matricula);
+        return turno;
+    }
 }

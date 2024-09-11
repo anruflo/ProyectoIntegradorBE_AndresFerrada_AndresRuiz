@@ -164,4 +164,5 @@ public class OdontologoService implements IOdontologoService {
             throw new BadRequestException("La matrícula no puede ser nula ni menor o igual a cero");
         }
     }
+
 }
