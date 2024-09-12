@@ -2,8 +2,8 @@ const apiURL = 'http://localhost:8080'
 
 // Obtener la referencia a la tabla y al modal
 const tableBody = document.querySelector('#odontologoTable tbody')
-const editModal = new bootstrap.Modal(document.getElementById('editModal'))
-const editForm = document.getElementById('editForm')
+// const editModal = new bootstrap.Modal(document.getElementById('editModal'))
+// const editForm = document.getElementById('editForm')
 let currentOdontologoId
 let currentDomicilioId
 

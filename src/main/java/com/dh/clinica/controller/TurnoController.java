@@ -60,8 +60,9 @@ public class TurnoController {
     public ResponseEntity<List<Turno>> buscarTurnoPorDniPAciente(@PathVariable String dni) {
         return ResponseEntity.ok(turnoService.buscarTurnoDniPaciente(dni));
     }
+
     @GetMapping("/odontologo/{matricula}")
-    public ResponseEntity<Turno> buscarTurnoPorMatriculaOdontologo(@PathVariable Integer matricula) {
+    public ResponseEntity<List<Turno>> buscarTurnoPorMatriculaOdontologo(@PathVariable Integer matricula) {
         return ResponseEntity.ok(turnoService.buscarTurnoPorMatriculaOdontologo(matricula));
     }
 }

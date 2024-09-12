@@ -23,5 +23,5 @@ public interface ITurnoService {
     @Query("select t from Turno t join t.paciente p where p.dni = :dniPaciente")
     List<Turno> buscarTurnoDniPaciente(String dniPaciente);
     @Query("select t from Turno t join t.odontologo o where o.matricula = :matricula")
-    Turno buscarTurnoPorMatriculaOdontologo(Integer matricula);
+    List<Turno> buscarTurnoPorMatriculaOdontologo(Integer matricula);
 }

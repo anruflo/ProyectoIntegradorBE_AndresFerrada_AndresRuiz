@@ -139,24 +139,25 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<Turno> buscarTurnoDniPaciente(String dniPaciente){
-        List<Turno> turno = turnoRepository.buscarTurnoDniPaciente(dniPaciente);
+        List<Turno> turnos = turnoRepository.buscarTurnoDniPaciente(dniPaciente);
 
-        if(turno.isEmpty()){
-            logger.info("No se encontró el paciente con DNI: {}", dniPaciente);
-            throw new ResourceNotFoundException("No se encontró el paciente con DNI: " + dniPaciente);
+        if(turnos.isEmpty()){
+            logger.info("No se encontraron turnos para el paciente con DNI: {}", dniPaciente);
+            throw new ResourceNotFoundException("No se encontraron turnos para el paciente con DNI: {}" + dniPaciente);
         }
-        logger.info("Se encontró el paciente con DNI: {}", dniPaciente);
-        return turno;
+        logger.info("Se encontraron {} turnos para el paciente con DNI: {}", turnos.size(), dniPaciente);
+        return turnos;
     }
-    @Override
-    public Turno buscarTurnoPorMatriculaOdontologo(Integer matricula) {
-        Turno turno = turnoRepository.buscarTurnoPorMatriculaOdontologo(matricula);
 
-        if(turno == null){
-            logger.info("No se encontró el odontólogo con la matrícula: {}", matricula);
-            throw new ResourceNotFoundException("No se encontró el odontólogo con la matrícula: " + matricula);
+    @Override
+    public List<Turno> buscarTurnoPorMatriculaOdontologo(Integer matricula) {
+        List<Turno> turnos = turnoRepository.buscarTurnoPorMatriculaOdontologo(matricula);
+
+        if(turnos.isEmpty()){
+            logger.info("No se encontraron turnos para el odontólogo con la matrícula: {}", matricula);
+            throw new ResourceNotFoundException("No se encontraron turnos para el odontólogo con la matrícula: " + matricula);
         }
-        logger.info("Se encontró el odontólogo con la matrícula: {}", matricula);
-        return turno;
+        logger.info("Se encontraron {} turnos para el odontólogo con la matrícula: {}", turnos.size(), matricula);
+        return turnos;
     }
 }
